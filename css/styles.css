@@ -1,0 +1,23 @@
+.text-google-WorkSans{
+    
+    font-family: 'Work Sans', sans-serif;
+}
+
+
+.header{
+    color:white;
+    /*#222 is the color of the background given by bootstrap for the navbar-inverse class so i gave the header that color*/
+    background:#222;
+    padding:0.5% 0;
+}
+
+
+/*
+.cpuinfo{
+    min-height:300px;
+}
+
+.meminfo{
+    min-height:300px;
+}
+*/
