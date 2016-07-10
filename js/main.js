@@ -1,8 +1,6 @@
 
 var streamSource;
 
-
-
 function onLoad() {
     
     //check if the browser supports Server-Sent Events 
@@ -23,6 +21,12 @@ function setListeners(){
         
     }, false);
 
+    streamSource.addEventListener("error", function(e) {
+        if(e.readyState == EventSource.CLOSED){
+            console.log("Connection closed");
+        }
+    },false);
+    
 }
 
 

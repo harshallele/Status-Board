@@ -15,7 +15,7 @@
         <div class="container-fluid">
             
             <!--Header-->
-            <div class="row text-center text-google-WorkSans header">
+            <div class="container-fluid text-center text-google-WorkSans header">
                 <h1>Status Board</h1>
                 <class="col-md-6 ostext"><h5></h5></class>
                 <class="col-md-6 uptimetext"><h5></h5></class>
@@ -24,7 +24,7 @@
             </div>
             
             <!--Nav bar-->
-            <div class="row navbar navbar-inverse">
+            <div class="container-fluid navbar navbar-inverse">
                 <ul class="nav navbar-nav">
                     <li class="text-google-WorkSans"><a href="#"><h4>System Information</h4></a></li>
                     <li class="text-google-WorkSans"><a href="#"><h4>About</h4></a></li>
@@ -32,32 +32,35 @@
                 
             </div>
             
-            <!--System Info-->
-            <div class="sysinfo row">
-                <div class="row  text-center">
-                    <div class="col-md-6 cpuinfo" >
-                        
-                        <h3>CPU</h3>
+            <div class="container-fluid">
+                <!--System Info-->
+                <div class="sysinfo row">
+                    <div class="row  text-center">
+                        <div class="col-md-6 cpuinfo" >
+
+                            <h3>CPU</h3>
+                        </div>
+
+                        <div class="col-md-6 meminfo" >
+                            <h3>Memory</h3>
+                        </div>
                     </div>
-                    
-                    <div class="col-md-6 meminfo" >
-                        <h3>Memory</h3>
+
+                    <div class="row diskinfo text-center text-google-WorkSans">
+                        <h3>Hard Drive</h3>
+
                     </div>
+
                 </div>
-                
-                <div class="row diskinfo text-center text-google-WorkSans">
-                    <h3>Hard Drive</h3>
-                
+
+                <!--About page. The display:none is disabled when the 'About' button in navbar is clicked-->
+                <div class="aboutscreen" style="display:none">
+
                 </div>
-                
+
             </div>
             
-            <!--About page. The display:none is disabled when the 'About' button in navbar is clicked-->
-            <div class="aboutscreen" style="display:none">
             
-            </div>
-        
-        </div>
         
     
     
