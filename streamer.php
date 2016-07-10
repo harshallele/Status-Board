@@ -25,7 +25,7 @@ function sendMsg($id, $msg) {
 do{
     //get system info
     $memFree = shell_exec("cat /proc/meminfo | grep MemAvailable | awk '{print $2/(1000*1000)}'");
-    $cpuUsage = shell_exec("top -b -n2 | grep \"Cpu(s)\" | awk '{print $2 + $4}'");
+    $cpuUsage = shell_exec("top -bn 2  | grep '^%Cpu' | tail -n 1 | gawk '{print $2+$4+$6}'");
     
     //only send the info if it has noticably changed from the last value
     if(abs($memFree - $lastMemVal)/$totalMemVal > 0.01){
