@@ -31,15 +31,15 @@ function sendMsg($id, $msg) {
 $timeIter=time();
 
 //send slow changing things like disk info, uptime etc. for the first time(later on, they will only be sent once every few minutes)
-$diskInfo = shell_exec("df -h | grep /dev/sd | awk '{print $6\":\"$3\"/\"$2}'");
-sendMsg("diskupdate",$diskInfo);
+
+//Disk Info
+$diskInfo = shell_exec("df -h | grep '/dev/sd' | awk '{print $1\"-\"$3\":\"$2\"-\"$6\"+\"}' |tr -d \"\n\" ");
+sendMsg("diskupdate",$diskInfo);  
+
+
 
 //main do-while loop that sends out new data. 
 while(true){
-    
-    if(time() - $startTime > 10000){
-        die();
-    }
     
     
     //get system info
@@ -47,9 +47,7 @@ while(true){
     $memFree = shell_exec("cat /proc/meminfo | grep MemAvailable | awk '{print $2/(1000*1000)}'");
     //CPU usage
     $cpuUsage = shell_exec("top -bn 2  | grep '^%Cpu' | tail -n 1 | gawk '{print $2+$4+$6}'");
-    //Disk Info
-    $diskInfo = shell_exec("df -h | grep /dev/sd | awk '{print $6\":\"$3\"/\"$2}'");
-
+    
     
     //only send the info if it has noticably changed from the last value
     if(abs($memFree - $lastMemVal)/$totalMemVal > 0.01){
@@ -59,6 +57,9 @@ while(true){
     if(abs($cpuUsage - $lastCPUVal) > 1){
         sendMsg("cpuupdate",$cpuUsage);
     }
+    
+    
+    
     
     
     
