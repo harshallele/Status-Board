@@ -36,6 +36,8 @@ $timeIter=time();
 $diskInfo = shell_exec("df -h | grep '/dev/sd' | awk '{print $1\"-\"$3\":\"$2\"-\"$6\"+\"}' |tr -d \"\n\" ");
 sendMsg("diskupdate",$diskInfo);  
 
+//Total System Memory
+sendMsg("totalmemory",$totalMemVal);
 
 
 //main do-while loop that sends out new data. 
@@ -44,7 +46,7 @@ while(true){
     
     //get system info
     //free memory 
-    $memFree = shell_exec("cat /proc/meminfo | grep MemAvailable | awk '{print $2/(1000*1000)}'");
+    $memFree = shell_exec("free -m | grep Mem | awk '{print ($3+$5)/1000}'");
     //CPU usage
     $cpuUsage = shell_exec("top -bn 2  | grep '^%Cpu' | tail -n 1 | gawk '{print $2+$4+$6}'");
     
