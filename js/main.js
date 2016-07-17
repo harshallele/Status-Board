@@ -138,7 +138,7 @@ function drawMemMeter(val) {
 
 }
 
-//Parse data from server update textfield for system uptime
+//Parse data from server and update the textfield for system uptime
 function setUptime(val){
     var strArr = val.split(" ");
     var uptimeText = "Uptime: "
@@ -147,7 +147,7 @@ function setUptime(val){
             uptimeText += strArr[i]+":";
            }
     }
-    
+    // uptimeText.slice(0,-1) is to remove the last ":"
     uptimeTextField.innerHTML = "<h4>"+uptimeText.slice(0,-1)+"</h4>";
     
 } 
