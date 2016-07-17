@@ -28,7 +28,7 @@ function sendMsg($id, $msg) {
 
 
 
-$timeIter=time();
+$timeUptime=time();
 
 //send slow changing things like disk info, uptime etc. for the first time(later on, they will only be sent once every few minutes)
 
@@ -39,6 +39,10 @@ sendMsg("diskupdate",$diskInfo);
 //Total System Memory
 sendMsg("totalmemory",$totalMemVal);
 
+//System uptime
+$uptime = shell_exec("uptime -p");
+sendMsg("uptime",$uptime);
+            
 
 //main do-while loop that sends out new data. 
 while(true){
@@ -60,9 +64,11 @@ while(true){
         sendMsg("cpuupdate",$cpuUsage);
     }
     
-    
-    
-    
+    //send system uptime once a minute
+    if(time() - $timeUptime > 60000){
+        sendMsg("uptime",$uptime);
+        $timeUptime = time();
+    }
     
     
     //record current values for use in the next iteration

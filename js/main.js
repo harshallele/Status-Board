@@ -1,6 +1,8 @@
 
 var streamSource;
 var cpuInfoCanvas, memInfoCanvas, diskInfoCanvas;
+var cpuInfoDiv,memInfoDiv;
+var uptimeTextField
 
 
 //object that contains values of stuff that doesn't change a lot
@@ -9,16 +11,18 @@ var unchanging = {
     disk : null
     
 };
-//objects that represent the canvas elements 
-var cpuCanvas = {
+//objects that represent the canvas and textfield elements for updating CPU,memory and disk info  
+var cpuField = {
     canvas : null,
     context : null,
+    textfield: null,
     width : null,
     height : null
 };
-var memCanvas = {
+var memField = {
     canvas : null,
     context : null,
+    textfield: null,
     width : null,
     height : null
 };
@@ -43,21 +47,26 @@ function onLoad() {
     
     
     //initialise elements
-    cpuCanvas.canvas = document.getElementById("cpuInfoCanvas");
-    cpuCanvas.context = cpuCanvas.canvas.getContext("2d");
-    cpuCanvas.width = cpuCanvas.canvas.width;
-    cpuCanvas.height = cpuCanvas.canvas.height;
+    cpuField.canvas = document.getElementById("cpuInfoCanvas");
+    cpuField.textfield = document.getElementById("cputextdiv");
+    cpuField.context = cpuField.canvas.getContext("2d");
+    cpuField.width = cpuField.canvas.width; 
+    cpuField.height = cpuField.canvas.height;
     
-    memCanvas.canvas = document.getElementById("memInfoCanvas");
-    memCanvas.context = memCanvas.canvas.getContext("2d");
-    memCanvas.width = memCanvas.canvas.width;
-    memCanvas.height = memCanvas.canvas.height;
+    
+    memField.canvas = document.getElementById("memInfoCanvas");
+    memField.textfield = document.getElementById("memtextdiv");
+    memField.context = memField.canvas.getContext("2d");
+    memField.width = memField.canvas.width; 
+    memField.height = memField.canvas.height;
     
     
     diskCanvas.canvas = document.getElementById("diskInfoCanvas");
     diskCanvas.context = diskCanvas.canvas.getContext("2d");
     diskCanvas.width = diskCanvas.canvas.width;
     diskCanvas.height = diskCanvas.canvas.height;
+    
+    uptimeTextField = document.getElementById("uptimetext");
     
     
 }
@@ -82,7 +91,7 @@ function handleMsg(msg) {
     var splitMsg = msg.split("=");
     var updateType = splitMsg[0];
     // String is in the same format regardless of whether it is a cpu or memory update 
-    if(updateType == "cpuupdate" || updateType == "memupdate" || updateType == "totalmemory") { 
+    if(updateType == "cpuupdate" || updateType == "memupdate" || updateType == "totalmemory" || updateType == "uptime") { 
         var newVal = splitMsg[1];
         
         if(updateType == "cpuupdate") {
@@ -93,34 +102,54 @@ function handleMsg(msg) {
         }
         else if(updateType == "totalmemory") {
             unchanging.totalMem = parseInt(newVal);
-            
         }
-    
+        else if(updateType == "uptime") {
+            setUptime(newVal);
+        }
     }
     
 }
 
+
+//draw an arc to show CPU and memory info, also, update the textfield
 function drawCpuMeter(val) {
     var value = parseInt(val); 
-    cpuCanvas.context.clearRect(0, 0, cpuCanvas.width, cpuCanvas.height);
-    cpuCanvas.context.beginPath();
-    cpuCanvas.context.arc((cpuCanvas.width/2),(cpuCanvas.height/2),(cpuCanvas.height*0.4),(1.5*Math.PI),((value/100*2*Math.PI)+1.5*Math.PI));
-    cpuCanvas.context.stroke();
-}
-
-function drawMemMeter(val) {
-    var value = parseInt(val); 
     
+    cpuField.textfield.innerHTML = val + "%";
+    
+    //draw arc that starts at 12 o'clock  
+    cpuField.context.clearRect(0, 0, cpuField.width, cpuField.height);
+    cpuField.context.beginPath();
+    cpuField.context.arc((cpuField.width/2),(cpuField.height/2),(cpuField.height*0.4),(1.5*Math.PI),((value/100*2*Math.PI)+1.5*Math.PI));
+    cpuField.context.stroke();
+    
+    }
+//draw memory info
+function drawMemMeter(val) {
+    var value = parseFloat(val); 
     var memPercent = (value/unchanging.totalMem) * 100;
     
-    console.log(memPercent);
-    memCanvas.context.clearRect(0, 0, memCanvas.width, memCanvas.height);
-    memCanvas.context.beginPath();
-    memCanvas.context.arc((memCanvas.width/2),(memCanvas.height/2),(memCanvas.height*0.4),(1.5*Math.PI),((memPercent/100*2*Math.PI)+1.5*Math.PI));
-    memCanvas.context.stroke();
+    memField.textfield.innerHTML = val + "/" + unchanging.totalMem.toString() + "GB (" + parseInt(memPercent) + "%)"; 
+    
+    memField.context.clearRect(0, 0, memField.width, memField.height);
+    memField.context.beginPath();
+    memField.context.arc((memField.width/2),(memField.height/2),(memField.height*0.4),(1.5*Math.PI),((memPercent/100*2*Math.PI)+1.5*Math.PI));
+    memField.context.stroke();
 
 }
 
-
+//Parse data from server update textfield for system uptime
+function setUptime(val){
+    var strArr = val.split(" ");
+    var uptimeText = "Uptime: "
+    for(var i=0;i<strArr.length;i++) {
+        if(!isNaN(strArr[i])) {
+            uptimeText += strArr[i]+":";
+           }
+    }
+    
+    uptimeTextField.innerHTML = "<h4>"+uptimeText.slice(0,-1)+"</h4>";
+    
+} 
 
 window.addEventListener("load", onLoad());

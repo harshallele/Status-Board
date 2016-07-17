@@ -17,7 +17,7 @@
             <!--Header-->
             <div class="row text-center text-google-WorkSans header">
                 <h1>Status Board</h1>
-                <class="col-md-6 uptimetext"><h5></h5></class>
+                <class="col-md-6" id="uptimetext"><h5></h5></class>
                 
                 
             </div>
@@ -31,19 +31,21 @@
                 
             </div>
             
-            <div class="container-fluid">
+            <div class="container-fluid text-google-WorkSans">
                 <!--System Info-->
-                <div class="sysinfo row">
+                <div class="sysinfo row ">
                     <div class="row  text-center">
                         <div class="col-md-6 cpuinfo" >
                             <h3>CPU</h3>
-                            <canvas id="cpuInfoCanvas"></canvas>
+                            <h3 id="cputextdiv"></h3>
+                            <canvas id="cpuInfoCanvas" height="300px"></canvas>
                             
                         </div>
                         
                         <div class="col-md-6 meminfo" >
                             <h3>Memory</h3>
-                            <canvas id="memInfoCanvas"></canvas>
+                            <h3 id="memtextdiv"></h3>
+                            <canvas id="memInfoCanvas" height="300px"></canvas>
                             
                         </div>
                     </div>

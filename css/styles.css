@@ -18,25 +18,28 @@
 
 
 
+
 .cpuinfo{
     min-width: 50%;
-    
+    min-height: 300px;
 }
 
 .meminfo{
     min-width: 50%;
+    min-height: 300px;
 }
 
 
+
+/*
 #cpuInfoCanvas{
-    min-width: 80%;
+    min-height: 300px;
     
 }
 
 #memInfoCanvas{
-    min-width: 80%;
-
+    min-height: 300px;
 }
-
+*/
 
 
